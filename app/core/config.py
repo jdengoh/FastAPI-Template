@@ -10,7 +10,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 def parse_cors(v: Any) -> list[str] | str:
     if isinstance(v, str) and not v.startswith("["):
         return [i.strip() for i in v.split(",")]
-    elif isinstance(v, list | str):
+    elif isinstance(v, (list, str)):
         return v
     raise ValueError(v)
 
@@ -46,7 +46,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    PROJECT_NAME: str | None
+    PROJECT_NAME: str | None = "geobit"
 
     # Auth Configuration
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
@@ -82,6 +82,9 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = ""
+
+    # MONGODB_URI: str
+    # MONGODB_DB_NAME: str
 
     @computed_field  # type: ignore[prop-decorator]
     @property

@@ -27,4 +27,4 @@ networks:
     driver: bridge
   fastapi-template-infra-network:
     name: fastapi-template-infra-network
-    driver: bridge 
+    driver: bridge
