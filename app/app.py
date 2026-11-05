@@ -41,7 +41,7 @@ async def lifespan(app: FastAPI):
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="Fastapi-Template", lifespan=lifespan)
+    app = FastAPI(title="my-project-template", lifespan=lifespan)
 
     # Setup routers
     routers = [router, agent.router]

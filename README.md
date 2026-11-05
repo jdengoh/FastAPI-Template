@@ -1,8 +1,18 @@
-# FastAPI-Template
+# my-project-template
 
 A FastAPI template for my experimental learning
 
-[![Python](https://img.shields.io/badge/Python-3.13+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+> [!IMPORTANT]
+> After cloning, search and replace `my-project-template` across the whole project with your project name, then run `uv sync`.
+
+> [!WARNING]
+> Not building a FastAPI app? Strip the FastAPI parts and keep the tooling (hooks, ruff, commitlint, markdownlint):
+>
+> 1. Delete `app/`, `Dockerfile`, `.dockerignore`, `docker-compose*.yaml` and `scripts/start*`
+> 2. Remove `asyncpg`, `fastapi`, `pydantic`, `pydantic-settings`, `sqlalchemy` and `uvicorn` from `pyproject.toml`
+> 3. Run `uv sync`
+
+[![Python](https://img.shields.io/badge/Python-3.14+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![uv](https://img.shields.io/badge/uv-DE5FE9?style=for-the-badge&logo=astral&logoColor=white)](https://docs.astral.sh/uv/)
@@ -55,7 +65,7 @@ README.md         # Its THE readme you are reading!
 
 ### Prerequisites <a id="prerequisites"></a>
 
-- [Python 3.13 or higher](https://www.python.org/downloads/)
+- [Python 3.14 or higher](https://www.python.org/downloads/)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) package and project manager
 
 ## Backend Setup <a id="backend-setup"></a>
@@ -148,7 +158,14 @@ BACKEND_CORS_ORIGINS=http://localhost:8000
 
 ## Development <a id="development"></a>
 
-TODO: Development Notes
+Install the dev tooling and wire up the Git hooks (pre-commit, commitlint, branch name check):
+
+```sh
+uv sync
+./scripts/setup_hooks.sh
+```
+
+Branch names must match `main`, `staging`, `release/yyyy-mm-dd`, or `feature|fix|bugfix|hotfix|data|function|job/<name>`. Commits follow [Conventional Commits](https://www.conventionalcommits.org/).
 
 ## Contributors <a id="contributors"></a>
 

@@ -2,29 +2,29 @@ services:
   # PostgreSQL for development (dependency first)
   postgres:
     image: postgres:alpine
-    container_name: fastapi-template-db
+    container_name: my-project-template-db
     environment:
-      POSTGRES_DB: fastapi-template-db
+      POSTGRES_DB: my-project-template-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Password123
     ports:
       - "5432:5432"
     volumes:
-      - fastapi-template-db:/var/lib/postgresql/data
+      - my-project-template-db:/var/lib/postgresql/data
     healthcheck:
       # Run a healthcheck, which our app will depend on before starting
-      test: ["CMD-SHELL", "pg_isready -U postgres -d fastapi-template-db"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d my-project-template-db"]
       interval: 5s
       timeout: 5s
       retries: 5
       start_period: 10s
     networks:
-      - fastapi-template-infra-network
+      - my-project-template-infra-network
 
 volumes:
-  fastapi-template-db:
+  my-project-template-db:
 
 networks:
-  fastapi-template-infra-network:
-    name: fastapi-template-infra-network
+  my-project-template-infra-network:
+    name: my-project-template-infra-network
     driver: bridge
