@@ -1,6 +1,6 @@
 services:
-  fastapi-template:
-    container_name: fastapi-template
+  my-project-template:
+    container_name: my-project-template
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,12 +19,12 @@ services:
       start_period: 10s
     restart: unless-stopped
     networks:
-      - fastapi-template-network
+      - my-project-template-network
 
 networks:
-  fastapi-template-network:
-    name: fastapi-template-network
+  my-project-template-network:
+    name: my-project-template-network
     driver: bridge
-  fastapi-template-infra-network:
-    name: fastapi-template-infra-network
+  my-project-template-infra-network:
+    name: my-project-template-infra-network
     driver: bridge

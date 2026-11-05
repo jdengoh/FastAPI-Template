@@ -1,6 +1,6 @@
 import logging
 from enum import StrEnum
-from typing import Any, List, Optional
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -22,18 +22,15 @@ class AgentResponse(BaseModel):
 
     event_type: EventType
     agent_name: str
-    history: Optional[
-        List[Any]
-    ]  # You might want to create a more specific type for history items
-    message: Optional[str] = None
-    data_type: Optional[str] = None
-    data: Optional[Any] = (
-        None  # Could be dict, str, or other types depending on use case
-    )
+    history: (
+        list[Any] | None
+    )  # You might want to create a more specific type for history items
+    message: str | None = None
+    data_type: str | None = None
+    data: Any | None = None  # Could be dict, str, or other types depending on use case
 
 
 class AgentService:
-
     def __init__(self):
         self.sample_agent = "Create your agent here"
 

@@ -39,7 +39,6 @@ def get_env_file_path() -> str | None:
 
 
 class Settings(BaseSettings):
-
     model_config = SettingsConfigDict(
         env_file=get_env_file_path(),
         env_ignore_empty=True,
@@ -55,9 +54,9 @@ class Settings(BaseSettings):
     FRONTEND_HOST: str = "http://localhost:3000"
     ENVIRONMENT: Literal["development", "production"] = "development"
 
-    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = (
-        []
-    )
+    BACKEND_CORS_ORIGINS: Annotated[
+        list[AnyUrl] | str, BeforeValidator(parse_cors)
+    ] = []
 
     @computed_field  # type: ignore[prop-decorator]
     @property

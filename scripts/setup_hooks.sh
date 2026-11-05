@@ -1,45 +1,40 @@
 #!/usr/bin/env bash
 
-echo "🛠️ Setting up Git hooks..."
+echo "🛠️ Setting up Git hooks for the project..."
 
-# Reset hooks path to default
+# Reset hooks path to default in case it was overridden previously
 git config --unset core.hooksPath 2>/dev/null || true
 
-# Install npm dependencies
-if [ -f "package.json" ]; then
-    echo "📥 Installing dependencies..."
-    npm install
-else
-    echo "📥 Installing and saving dependencies..."
-    npm install --save-dev @commitlint/config-conventional @commitlint/cli
-fi
-
-echo "✅ Dependencies installed successfully."
-
-SETUP_SUCCESS=true
-
-# Setup pre-commit if available
-if command -v pre-commit &> /dev/null; then
-    echo "🔧 Setting up pre-commit..."
-    pre-commit install
-else
-    echo "❌ pre-commit not found - skipping pre-commit setup"
-    echo "Check UV environment and ensure pre-commit is installed."
-    SETUP_SUCCESS=false
-fi
-
-# Copy custom hooks
-for hook in commit-msg pre-push; do
-    if [ -f ".githooks/$hook" ]; then
-        echo "Installing $hook hook..."
-        cp ".githooks/$hook" ".git/hooks/$hook"
-        chmod +x ".git/hooks/$hook"
-        echo "✅ $hook copied successfully."
+# 1. Check for pre-commit and install if missing
+if ! command -v pre-commit &> /dev/null; then
+    echo "📦 pre-commit not found. Attempting to install..."
+    if command -v brew &> /dev/null; then
+        echo "Using Homebrew..."
+        brew install pre-commit
+    elif command -v pipx &> /dev/null; then
+        echo "Using pipx..."
+        pipx install pre-commit
+    elif command -v pip3 &> /dev/null; then
+        echo "Using pip3..."
+        pip3 install --user pre-commit
+    else
+        echo "❌ Error: Could not automatically install pre-commit."
+        echo "Please install it manually: https://pre-commit.com/#install"
+        exit 1
     fi
-done
-
-if [ "$SETUP_SUCCESS" = true ]; then
-    echo "✅ Git hooks setup completed!"
 else
-    echo "❌ Git hooks setup failed."
+    echo "✅ pre-commit is already installed."
 fi
+
+# 2. Wire up all configured hook types in one shot and pre-warm environments
+# (hook types are read from `default_install_hook_types` in .pre-commit-config.yaml)
+echo "🔧 Wiring up pre-commit hooks..."
+if pre-commit install --install-hooks; then
+    echo "✅ Git hooks installed and environments pre-warmed."
+else
+    echo "❌ Failed to install pre-commit hooks."
+    exit 1
+fi
+
+echo "🎉 Git hooks setup completed successfully!"
+echo "💡 Tip: Run 'pre-commit run --all-files' to format your repo for the first time."

@@ -1,73 +1,49 @@
-# # See https://pre-commit.com for more information
-# # See https://pre-commit.com/hooks.html for more hooks
-exclude: "^app/backend/tests/unit/prepdocslib/snapshots/"
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-toml
+        stages: [pre-commit]
       - id: check-yaml
+        stages: [pre-commit]
       - id: check-added-large-files
-        args: ["--maxkb=100000"] # Set the maximum file size to 2048 KB (2 MB)
+        args: ["--maxkb=100000"] # 100 MB
       - id: end-of-file-fixer
       - id: requirements-txt-fixer
       - id: trailing-whitespace
       - id: detect-private-key
       - id: mixed-line-ending
 
-  # Removes unnecessary # noqa comments.
-  - repo: https://github.com/asottile/yesqa
-    rev: v1.5.0
-    hooks:
-      - id: yesqa
-
-  # Check for blanket (overly broad) noqa comments and encourage type annotations.
-  - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.10.0
-    hooks:
-      - id: python-check-blanket-noqa
-      - id: python-use-type-annotations
-
-  - repo: https://github.com/psf/black
-    rev: 25.1.0
-    hooks:
-      - id: black
-        args: [--safe]
-
-  - repo: https://github.com/pycqa/isort
-    rev: 6.0.1
-    hooks:
-      - id: isort
-        args: [--profile=black]
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.10
+    rev: v0.16.0
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [--fix, --exit-non-zero-on-fix]
-
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.9.1
-    hooks:
-      - id: nbqa-black
-        additional_dependencies: [black==25.1.0]
-      - id: nbqa-isort
-        additional_dependencies: [isort==6.0.1]
-        args: [--profile=black]
-      - id: nbqa-ruff
-        additional_dependencies: [ruff==0.11.10]
+      - id: ruff-format
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.18.1
+    rev: v0.23.2
     hooks:
       - id: markdownlint-cli2
         args: [--fix]
 
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  - repo: local
     hooks:
-      - id: prettier
-        args: [--write]
-        types_or: [css, json, javascript, ts, tsx, html]
-        additional_dependencies:
-          - prettier@3.5.3
+      - id: commitlint
+        name: Conventional Commits (commitlint)
+        description: Enforce Conventional Commits format on the commit message.
+        language: unsupported
+        entry: npx commitlint --edit
+        stages: [commit-msg]
+
+      - id: branch-name-check
+        name: Branch naming convention
+        description: Reject pushes from branches that don't follow the naming convention.
+        language: unsupported
+        entry: bash scripts/check_branch_name.sh
+        stages: [pre-push]
+        always_run: true
+        pass_filenames: false
