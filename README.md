@@ -3,7 +3,7 @@
 A FastAPI template for my experimental learning
 
 > [!IMPORTANT]
-> After cloning, search and replace `my-project-template` across the whole project with your project name (e.g. `Cmd+Shift+H` in VS Code), then run `uv lock`.
+> After cloning, search and replace `my-project-template` across the whole project with your project name, then run `uv sync`.
 
 > [!WARNING]
 > Not building a FastAPI app? Strip the FastAPI parts and keep the tooling (hooks, ruff, commitlint, markdownlint):
